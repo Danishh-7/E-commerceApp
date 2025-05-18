@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
@@ -7,6 +8,7 @@ import {
   Image,
   ActivityIndicator,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
@@ -16,7 +18,7 @@ const cardWidth = (screenWidth - itemSpacing * 3) / 2;
 const Category = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const navigation=useNavigation();
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
       .then((res) => res.json())
@@ -31,14 +33,17 @@ const Category = () => {
   }, []);
 
   const renderProduct = ({ item }) => (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={()=>{ 
+      console.log("Navigating with:", item)
+      navigation.navigate('Details',{ product: item })}}>
+      {/* {console.log("this is prod", item)} */}
       <Image source={{ uri: item.image }} style={styles.image} />
       <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
       <View style={styles.detailcontainer}>
       <Text style={styles.price}>${item.price.toFixed(2)}</Text>
       <Text style={styles.rating}>⭐ {item.rating.rate} ({item.rating.count})</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
   
 

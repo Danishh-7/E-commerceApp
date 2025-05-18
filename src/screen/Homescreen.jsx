@@ -6,8 +6,9 @@ import Header from "./Header";
 import Category from "./Category";
 
 const Homescreen = () => {
+
   return (
-    <LinearGradient colors={["#FDF0F3", "#FFFBFC"]} style={styles.container}>
+    <LinearGradient colors={["#FDF0F3", "#FFFBFC"]} style={styles.container} >
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
           <Header />

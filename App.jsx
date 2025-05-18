@@ -11,25 +11,30 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Homescreen from './src/screen/Homescreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Productdetails from './src/screen/Productdetails';
+import Cart from './src/screen/Cart';
 
 const Tab = createBottomTabNavigator();
-
+const Stack=createNativeStackNavigator();
 const Reorder = () => (
   <View style={styles.center}>
     <Text style={styles.text}>Reorder</Text>
   </View>
 );
 
-const Cart = () => (
-  <View style={styles.center}>
-    <Text style={styles.text}>Cart</Text>
-  </View>
-);
+
 
 const Account = () => (
   <View style={styles.center}>
     <Text style={styles.text}>Account</Text>
   </View>
+);
+const Homestack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Homescreen" component={Homescreen} />
+    <Stack.Screen name="Details" component={Productdetails} />
+  </Stack.Navigator>
 );
 
 const App = () => {
@@ -57,8 +62,9 @@ const App = () => {
             tabBarInactiveTintColor: 'gray',
             headerShown: false,
           })}
+          // initialRouteName="Cart"
         >
-          <Tab.Screen name="Home" component={Homescreen} />
+          <Tab.Screen name="Home" component={Homestack} />
           <Tab.Screen name="Reorder" component={Reorder} />
           <Tab.Screen name="Cart" component={Cart} />
           <Tab.Screen name="Account" component={Account} />

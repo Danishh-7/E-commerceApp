@@ -1,14 +1,20 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-
-const Header = () => {
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { useNavigation } from '@react-navigation/native';
+const Header = ({isCart}) => {
+  const navigation=useNavigation()
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
+       <TouchableOpacity onPress={() => navigation.navigate("Home", { screen: "Homescreen" })}>
+       {!isCart?(<Image
           source={require('../screen/assets/icon/Vector.png')}
           style={styles.logo}
-        />
+        />):(<Ionicons name="chevron-back" color
+        ="black" size={32}/>)}
+       </TouchableOpacity>
+       {isCart&&<Text style={{fontSize:29}}>My Cart</Text>}
          <Image
           source={require('../screen/assets/icon/Ellipse2.png')}
           style={styles.image}
@@ -23,8 +29,8 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    paddingHorizontal:5,
-    marginTop:10,
+    // paddingHorizontal:5,
+    // marginTop:10,
     // alignItems: 'center', // Center the image horizontally
     // backgroundColor: '#fff', // Optional background
     // backgroundColor:'red',
