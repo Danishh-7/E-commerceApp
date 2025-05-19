@@ -1,23 +1,33 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-const Header = ({isCart}) => {
-  const navigation=useNavigation()
+
+const Header = ({ isCart }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-       <TouchableOpacity onPress={() => navigation.navigate("Home", { screen: "Homescreen" })}>
-       {!isCart?(<Image
-          source={require('../screen/assets/icon/Vector.png')}
-          style={styles.logo}
-        />):(<Ionicons name="chevron-back" color
-        ="black" size={32}/>)}
-       </TouchableOpacity>
-       {isCart&&<Text style={{fontSize:29}}>My Cart</Text>}
-         <Image
-          source={require('../screen/assets/icon/Ellipse2.png')}
-          style={styles.image}
+        {/* Left: Logo or Back Button */}
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          {isCart ? (
+            <Ionicons name="chevron-back" color="black" size={32} />
+          ) : (
+            <Image
+              source={require('../assets/icon/Vector.png')}
+              style={styles.logo}
+            />
+          )}
+        </TouchableOpacity>
+
+        {/* Center: Title when in cart */}
+        {isCart && <Text style={styles.title}>My Cart</Text>}
+
+        {/* Right: Profile/Avatar Image */}
+        <Image
+          source={require('../assets/icon/Ellipse2.png')}
+          style={styles.avatar}
         />
       </View>
     </View>
@@ -28,29 +38,36 @@ export default Header;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    // paddingHorizontal:5,
-    // marginTop:10,
-    // alignItems: 'center', // Center the image horizontally
-    // backgroundColor: '#fff', // Optional background
-    // backgroundColor:'red',
+    // paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: 'transparent',
   },
-  header:{
-    display:"flex",
-    // flex:1,
-    width:"100%",
-    flexDirection:'row',
-    justifyContent:'space-between',
-    // backgroundColor:'red',
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  logo:{
+
+  logo: {
     width: 30,
     height: 30,
+    resizeMode: 'contain',
   },
-  image: {
+
+  avatar: {
     width: 40,
     height: 40,
-    borderRadius: 30, 
+    borderRadius: 20,
     resizeMode: 'cover',
+  },
+
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
+    position: 'absolute',
+    left: '50%',
+    transform: [{ translateX: -50 }],
   },
 });

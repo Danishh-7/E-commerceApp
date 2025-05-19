@@ -1,11 +1,16 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
-import LinearGradient from 'react-native-linear-gradient'
-import Header from './Header'
-import { useRoute } from '@react-navigation/native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useContext } from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+import Header from './Header';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { CartContext } from '../Cartcontext';
 
 const Productdetails = () => {
   const route = useRoute();
+  const { addtocart } = useContext(CartContext);
+  const navigation = useNavigation();
+
+  // Default product (if route doesn't have one)
   const product = route?.params?.product || {
     title: "Redmi Note 12",
     description: "Power-packed performance with Snapdragon 4 Gen 1",
@@ -15,84 +20,119 @@ const Productdetails = () => {
       rate: 4.3,
       count: 5678
     }
-  }
+  };
+
+  // Handles adding product to cart and navigating to Cart screen
+  const handleAddToCart = (item) => {
+    addtocart(item);
+    navigation.navigate("Cart");
+  };
 
   return (
     <LinearGradient colors={["#FDF0F3", "#FFFBFC"]} style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.headercontainer}>
-          <Header />
-          <Image
-            source={{ uri: product.image }}
-            style={styles.image}
-            resizeMode="contain"
-          />
-          <View style={styles.details}>
-            <Text style={styles.title}>{product.title}</Text>
-            <Text style={styles.description}>{product.description}</Text>
-            <Text style={styles.price}>₹ {product.price}</Text>
-            <Text style={styles.rating}>
-              ⭐ {product.rating.rate} ({product.rating.count} reviews)
-            </Text>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Add to Cart</Text>
-            </TouchableOpacity>
-          </View>
+        <Header />
+        <Image
+          source={{ uri: product.image }}
+          style={styles.productImage}
+          resizeMode="contain"
+        />
+        <View style={styles.detailsContainer}>
+          <Text style={styles.productTitle}>{product.title}</Text>
+          <Text style={styles.productDescription}>{product.description}</Text>
+          <Text style={styles.productPrice}>₹ {product.price}</Text>
+          <Text style={styles.productRating}>
+            ⭐ {product.rating.rate} ({product.rating.count} reviews)
+          </Text>
+
+          <TouchableOpacity style={styles.addButton} onPress={() => handleAddToCart(product)}>
+            <Text style={styles.addButtonText}>Add to Cart</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </LinearGradient>
-  )
-}
+  );
+};
 
-export default Productdetails
+export default Productdetails;
 
 const styles = StyleSheet.create({
+  // Main container with gradient background
   container: {
     flex: 1,
   },
+
+  // Scrollable content container
   scrollContainer: {
     paddingHorizontal: 20,
-    paddingBottom: 20, 
+    paddingBottom: 30,
   },
-  headercontainer: {
-  },
-  image: {
+
+  // Product image style
+  productImage: {
     width: '100%',
     height: 250,
     marginTop: 20,
+    borderRadius: 10,
+    backgroundColor: '#fff',
   },
-  details: {
-    marginTop: 20,
+
+  // Wrapper for all product details
+  detailsContainer: {
+    marginTop: 25,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 12,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
   },
-  title: {
-    fontSize: 22,
+
+  // Product title style
+  productTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#222',
   },
-  description: {
+
+  // Product description text
+  productDescription: {
     fontSize: 16,
-    color: '#444',
-    marginBottom: 10,
+    color: '#555',
+    marginBottom: 12,
+    lineHeight: 22,
   },
-  price: {
+
+  // Product price text
+  productPrice: {
     fontSize: 20,
-    color: 'green',
-    marginBottom: 10,
+    color: '#28a745',
+    fontWeight: '600',
+    marginBottom: 8,
   },
-  rating: {
+
+  // Rating text
+  productRating: {
     fontSize: 16,
     color: '#888',
     marginBottom: 20,
   },
-  button: {
+
+  // Add to Cart button
+  addButton: {
     backgroundColor: '#FF6B6B',
-    padding: 15,
+    paddingVertical: 14,
     borderRadius: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  buttonText: {
+
+  // Add to Cart button text
+  addButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   }
-})
+});

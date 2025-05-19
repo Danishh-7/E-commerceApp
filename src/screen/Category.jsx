@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: 'contain',
     marginBottom: 8,
-    borderRadius:"5%",
+    borderRadius:8,
     backgroundColor:'#FFFBFC',
   },
   title: {
