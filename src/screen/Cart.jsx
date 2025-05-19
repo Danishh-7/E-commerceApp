@@ -12,12 +12,17 @@ import Header from "./Header";
 import Cartitem from "./Cartitem";
 import { CartContext } from "../Cartcontext";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Cart = () => {
   const [isCart, setIsCart] = useState(true);
   const navigation = useNavigation();
-  const { carts, totalprice } = useContext(CartContext);
-
+  const { carts, totalprice, handlecheckout } = useContext(CartContext)
+  const handlecheckoutcart = () => {
+    console.log("checkout button pressed");
+    handlecheckout();
+  };
+  
   return (
     <LinearGradient colors={["#FDF0F3", "#FFFBFC"]} style={styles.container}>
       {/* App Header with cart prop */}
@@ -56,18 +61,13 @@ const Cart = () => {
 
       {/* Checkout Button */}
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.checkoutButton}
-          onPress={() => {
-            if (carts.length > 0) {
-              Alert.alert("Success", "Proceeding to checkout");
-            } else {
-              Alert.alert("Hold on", "Please add some item to checkout");
-            }
-          }}
-        >
-          <Text style={styles.checkoutText}>Checkout</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+  style={styles.checkoutButton}
+  onPress={handlecheckoutcart}
+>
+  <Text style={styles.checkoutText}>Checkout</Text>
+</TouchableOpacity>
+
       </View>
     </LinearGradient>
   );

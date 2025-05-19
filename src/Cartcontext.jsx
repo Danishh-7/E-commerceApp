@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { createContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [carts, setCarts] = useState([]);
   const [totalprice, setTotalprice] = useState(0);
-
   useEffect(() => {
     loadcartitems();
   }, []);
@@ -29,7 +30,7 @@ export const CartProvider = ({ children }) => {
   const totalsum=(carts)=>{
     //  let carts=AsyncStorage.getItem("carts")
     //  carts=carts?JSON.parse(carts):[]
-     const totalsum=carts.reduce((amount,item)=>(amount+item.price),0)
+    const totalsum = carts.reduce((amount, item) => amount + (item.price || 0), 0);
      console.log("total sum ",totalsum)
      setTotalprice(totalsum)
   }
@@ -40,12 +41,38 @@ export const CartProvider = ({ children }) => {
     setCarts(newcart);
     totalsum(newcart)
   };
+  const handlecheckout =  async() => {
+    if (carts.length > 0) {
+      Alert.alert("Success", "Order completed");
+  
+      setCarts([]); // Reset the cart in state
+      totalsum([]); // Reset total (ensure it's the right function)
+  
+      try {
+        console.log("Saving new cart to AsyncStorage...");
+        await AsyncStorage.setItem("carts", JSON.stringify([]));
+        console.log("Cart cleared in AsyncStorage.");
+        // Optional: Verify
+        const storedCart = await AsyncStorage.getItem("carts");
+        console.log("Stored cart after clearing:", storedCart);
+      } catch (error) {
+        console.error("Error saving to AsyncStorage during checkout:", error);
+      }
+      navigation.navigate("Homescreen")
+      // Optional: Navigate away
+      // navigation.navigate("Home");
+    } else {
+      Alert.alert("Hold on", "Please add some items to checkout");
+    }
+  };
+  
 
   const value = {
     carts,
     addtocart,
     deletefromcart,
-    totalprice
+    totalprice,
+    handlecheckout
   };
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
