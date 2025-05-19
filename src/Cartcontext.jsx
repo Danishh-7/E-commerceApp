@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { createContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
-import { useNavigation } from '@react-navigation/native';
 export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [carts, setCarts] = useState([]);
@@ -45,8 +44,8 @@ export const CartProvider = ({ children }) => {
     if (carts.length > 0) {
       Alert.alert("Success", "Order completed");
   
-      setCarts([]); // Reset the cart in state
-      totalsum([]); // Reset total (ensure it's the right function)
+      setCarts([]); 
+      totalsum([]); 
   
       try {
         console.log("Saving new cart to AsyncStorage...");
@@ -58,15 +57,11 @@ export const CartProvider = ({ children }) => {
       } catch (error) {
         console.error("Error saving to AsyncStorage during checkout:", error);
       }
-      navigation.navigate("Homescreen")
-      // Optional: Navigate away
-      // navigation.navigate("Home");
     } else {
       Alert.alert("Hold on", "Please add some items to checkout");
     }
   };
   
-
   const value = {
     carts,
     addtocart,
