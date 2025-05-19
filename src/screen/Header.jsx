@@ -10,7 +10,7 @@ const Header = ({ isCart }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         {/* Left: Logo or Back Button */}
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           {isCart ? (
             <Ionicons name="chevron-back" color="black" size={32} />
           ) : (
@@ -25,10 +25,12 @@ const Header = ({ isCart }) => {
         {isCart && <Text style={styles.title}>My Cart</Text>}
 
         {/* Right: Profile/Avatar Image */}
+        <TouchableOpacity onPress={() => navigation.navigate("Account")}>
         <Image
           source={require('../assets/icon/Ellipse2.png')}
           style={styles.avatar}
         />
+         </TouchableOpacity>
       </View>
     </View>
   );
